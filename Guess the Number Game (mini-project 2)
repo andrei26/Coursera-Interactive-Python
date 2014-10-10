@@ -1,0 +1,72 @@
+#Guess the Number Game
+
+#Import needed modules
+
+import simplegui
+import random
+
+#set global variables for the secret number and number of tries
+
+secret_number = random.randrange (0,100)
+number_tries = 7
+print "A new game begins. Range 1-100"
+#Create needed functions
+
+def new_game():
+    """Used to reset game"""
+    range100()
+    
+def range100():
+    """defines a random secret number and sets 7 tries to guess it"""
+    print "A new game begins. Range 1-100"
+    global secret_number
+    global number_tries
+    number_tries = 7
+    secret_number = random.randrange(0, 100)
+    return secret_number, number_tries 
+
+def range1000():
+    """defines a random secret number and sets 10 tries to guess it"""
+    print "A new game begins. Range 1-1000"
+    global secret_number
+    global number_tries
+    number_tries = 10
+    secret_number = random.randrange(0, 1000)
+    return secret_number, number_tries
+
+def input_guess(input):
+    """ repeats the user's guess, prints remaining tries, informs if
+    the secret number is lower, higher or correct, and restarts game 
+    after loosing/winning"""
+    
+    global secret_number
+    global number_tries
+    print "Your guess is", input
+    if float(input) < secret_number:
+        number_tries = number_tries - 1
+        if number_tries == 0:
+            print "You have 0 tries left. You loose. The secret number was", secret_number
+            return new_game()
+        else:
+            print "Higher"
+            print "You have", number_tries, "tries left"
+    elif float(input) == secret_number:
+        print "Correct"
+        return new_game()
+    else:
+        number_tries = number_tries - 1
+        if number_tries == 0:
+            print "You have 0 tries left. You loose. The number was", secret_number
+            return new_game()
+        else:
+            print "Lower"
+            print "You have", number_tries, "tries left"
+
+#Here starts the code for the user interface
+
+frame = simplegui.create_frame('Guess the number', 200, 200)
+button1 = frame.add_button('Range: 0-100 ', range100, 150)
+button2 = frame.add_button('Range: 0-1000', range1000, 150)
+input = frame.add_input('Your guess:', input_guess, 80)
+
+frame.start()
